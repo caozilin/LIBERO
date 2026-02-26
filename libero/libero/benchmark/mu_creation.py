@@ -12,15 +12,85 @@ from libero.libero.utils.mu_utils import register_mu, InitialSceneTemplates
 # LIBERO_ORGANIZE - Custom task suite for OpenPI project
 # ============================================================================
 
+# Scene 1: Kitchen - Mentioned objects only (objects referenced in task instructions)
+# Fixture: wooden_cabinet (Mentioned). Objects: ketchup, plate, akita_black_bowl (all Mentioned, lightweight)
 @register_mu(scene_type="kitchen")
-class OrgKitchenScene1(InitialSceneTemplates):
+class OrgKitchenMentionedScene1(InitialSceneTemplates):
+    def __init__(self):
+        fixture_num_info = {
+            "kitchen_table": 1,
+            "wooden_cabinet": 1,
+        }
+        object_num_info = {
+            "akita_black_bowl": 1,
+            "plate": 1,
+            "ketchup": 1,
+        }
+        super().__init__(
+            workspace_name="kitchen_table",
+            fixture_num_info=fixture_num_info,
+            object_num_info=object_num_info,
+        )
+
+    def define_regions(self):
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.0, -0.30],
+                region_name="wooden_cabinet_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.01,
+                yaw_rotation=(np.pi, np.pi),
+            )
+        )
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.05, 0.05],
+                region_name="bowl_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.10, 0.10],
+                region_name="plate_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.10, 0.10],
+                region_name="ketchup_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(self.regions)
+
+    @property
+    def init_states(self):
+        return [
+            ("On", "wooden_cabinet_1", "kitchen_table_wooden_cabinet_init_region"),
+            ("On", "akita_black_bowl_1", "kitchen_table_bowl_init_region"),
+            ("On", "plate_1", "kitchen_table_plate_init_region"),
+            ("On", "ketchup_1", "kitchen_table_ketchup_init_region"),
+        ]
+
+
+# Scene 2: Kitchen - Not-Mentioned objects only (objects NOT referenced in task instructions)
+# Fixture: white_cabinet (Not-Mentioned). Objects: white_bowl, wooden_tray, chefmate_8_frypan (all Not-Mentioned, lightweight)
+@register_mu(scene_type="kitchen")
+class OrgKitchenNotMentionedScene1(InitialSceneTemplates):
     def __init__(self):
         fixture_num_info = {
             "kitchen_table": 1,
             "white_cabinet": 1,
         }
         object_num_info = {
-            "akita_black_bowl": 1,
+            "white_bowl": 1,
+            "wooden_tray": 1,
+            "chefmate_8_frypan": 1,
         }
         super().__init__(
             workspace_name="kitchen_table",
@@ -40,8 +110,24 @@ class OrgKitchenScene1(InitialSceneTemplates):
         )
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[0.0, 0.0],
-                region_name="bowl_init_region",
+                region_centroid_xy=[-0.05, 0.05],
+                region_name="white_bowl_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.10, 0.10],
+                region_name="wooden_tray_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.10, 0.10],
+                region_name="frypan_init_region",
                 target_name=self.workspace_name,
                 region_half_len=0.025,
             )
@@ -51,105 +137,13 @@ class OrgKitchenScene1(InitialSceneTemplates):
     @property
     def init_states(self):
         return [
-            ("On", "akita_black_bowl_1", "kitchen_table_bowl_init_region"),
             ("On", "white_cabinet_1", "kitchen_table_white_cabinet_init_region"),
+            ("On", "white_bowl_1", "kitchen_table_white_bowl_init_region"),
+            ("On", "wooden_tray_1", "kitchen_table_wooden_tray_init_region"),
+            ("On", "chefmate_8_frypan_1", "kitchen_table_frypan_init_region"),
         ]
 
 
-@register_mu(scene_type="kitchen")
-class OrgKitchenScene2(InitialSceneTemplates):
-    def __init__(self):
-        fixture_num_info = {
-            "kitchen_table": 1,
-            "flat_stove": 1,
-        }
-        object_num_info = {
-            "moka_pot": 1,
-        }
-        super().__init__(
-            workspace_name="kitchen_table",
-            fixture_num_info=fixture_num_info,
-            object_num_info=object_num_info,
-        )
-
-    def define_regions(self):
-        self.regions.update(
-            self.get_region_dict(
-                region_centroid_xy=[0.0, -0.25],
-                region_name="flat_stove_init_region",
-                target_name=self.workspace_name,
-                region_half_len=0.01,
-            )
-        )
-        self.regions.update(
-            self.get_region_dict(
-                region_centroid_xy=[0.0, 0.15],
-                region_name="moka_pot_init_region",
-                target_name=self.workspace_name,
-                region_half_len=0.025,
-            )
-        )
-        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(self.regions)
-
-    @property
-    def init_states(self):
-        return [
-            ("On", "moka_pot_1", "kitchen_table_moka_pot_init_region"),
-            ("On", "flat_stove_1", "kitchen_table_flat_stove_init_region"),
-        ]
-
-
-@register_mu(scene_type="living_room")
-class OrgLivingRoomScene1(InitialSceneTemplates):
-    def __init__(self):
-        fixture_num_info = {
-            "living_room_table": 1,
-        }
-        object_num_info = {
-            "alphabet_soup": 1,
-            "tomato_sauce": 1,
-            "basket": 1,
-        }
-        super().__init__(
-            workspace_name="living_room_table",
-            fixture_num_info=fixture_num_info,
-            object_num_info=object_num_info,
-        )
-
-    def define_regions(self):
-        self.regions.update(
-            self.get_region_dict(
-                region_centroid_xy=[-0.1, 0.0],
-                region_name="alphabet_soup_init_region",
-                target_name=self.workspace_name,
-                region_half_len=0.025,
-            )
-        )
-        self.regions.update(
-            self.get_region_dict(
-                region_centroid_xy=[0.1, 0.0],
-                region_name="tomato_sauce_init_region",
-                target_name=self.workspace_name,
-                region_half_len=0.025,
-            )
-        )
-        self.regions.update(
-            self.get_region_dict(
-                region_centroid_xy=[0.0, 0.25],
-                region_name="basket_init_region",
-                target_name=self.workspace_name,
-                region_half_len=0.025,
-            )
-        )
-        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(self.regions)
-
-    @property
-    def init_states(self):
-        return [
-            ("On", "alphabet_soup_1", "living_room_table_alphabet_soup_init_region"),
-            ("On", "tomato_sauce_1", "living_room_table_tomato_sauce_init_region"),
-            ("On", "basket_1", "living_room_table_basket_init_region"),
-        ]
 
 
 # ============================================================================

@@ -1,0 +1,27 @@
+1. Task-Active Objects (Mentioned in Instructions)
+These items are explicitly targeted for manipulation or used as spatial references in the tasks.
+
+Food & Seasonings: alphabet_soup, bbq_sauce, butter, chocolate_pudding, cookies (as cookie box), cream_cheese, ketchup, milk, orange_juice, salad_dressing, tomato_sauce.
+
+Tableware & Containers: akita_black_bowl (as black bowl), plate, basket, glazed_rim_porcelain_ramekin (as ramekin), porcelain_mug (as white mug), white_yellow_mug (as yellow and white mug).
+
+Appliances & Furniture: flat_stove (as stove), microwave, wooden_cabinet (as cabinet).
+
+Study & Storage: black_book, yellow_book, desk_caddy (as caddy).
+
+Wine Related: wine_bottle, wine_rack (referenced as rack), rack.
+
+Cooking Tools: moka_pot.
+
+2. Static / Environment Objects (Not Mentioned)
+These items exist in the available_objects.txt list but do not appear in the specific task sets provided.
+
+Food & Seasonings: cherries, corn, macaroni_and_cheese, mayo, popcorn, new_salad_dressing.
+
+Tableware & Containers: white_bowl, wooden_tray, dining_set_group, red_coffee_mug.
+
+Furniture & Fixtures: slide_cabinet, white_cabinet, short_cabinet, short_fridge, wooden_shelf, wooden_two_layer_shelf, white_storage_box, window.
+
+Plumbing & Tools: faucet, basin_faucet, chefmate_8_frypan, bowl_drainer.
+
+System: target_zone.

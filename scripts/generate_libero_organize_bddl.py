@@ -12,6 +12,9 @@ from libero.libero.utils.task_generation_utils import (
     generate_bddl_from_task_info,
 )
 
+# Import to register scene classes
+from libero.libero.benchmark import mu_creation
+
 
 def main():
     output_folder = os.path.join(
@@ -20,9 +23,9 @@ def main():
     )
     os.makedirs(output_folder, exist_ok=True)
 
-    # Task 1: Put black bowl in top drawer
+    # Task 1: Open top drawer and put black bowl in it
     register_task_info(
-        language="put the black bowl in the top drawer of the cabinet",
+        language="open the top drawer of the cabinet and put the black bowl in it",
         scene_name="org_kitchen_scene1",
         objects_of_interest=["akita_black_bowl_1", "white_cabinet_1"],
         goal_states=[
@@ -31,9 +34,9 @@ def main():
         ],
     )
 
-    # Task 2: Put black bowl in bottom drawer
+    # Task 2: Open bottom drawer and put black bowl in it
     register_task_info(
-        language="put the black bowl in the bottom drawer of the cabinet",
+        language="open the bottom drawer of the cabinet and put the black bowl in it",
         scene_name="org_kitchen_scene1",
         objects_of_interest=["akita_black_bowl_1", "white_cabinet_1"],
         goal_states=[

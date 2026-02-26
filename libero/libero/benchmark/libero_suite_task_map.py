@@ -1,7 +1,7 @@
 libero_task_map = {
     "libero_organize": [
-        "ORG_KITCHEN_SCENE1_put_the_black_bowl_in_the_top_drawer_of_the_cabinet",
-        "ORG_KITCHEN_SCENE1_put_the_black_bowl_in_the_bottom_drawer_of_the_cabinet",
+        "ORG_KITCHEN_SCENE1_open_the_top_drawer_of_the_cabinet_and_put_the_black_bowl_in_it",
+        "ORG_KITCHEN_SCENE1_open_the_bottom_drawer_of_the_cabinet_and_put_the_black_bowl_in_it",
         "ORG_KITCHEN_SCENE2_turn_on_the_stove",
         "ORG_KITCHEN_SCENE2_turn_on_the_stove_and_put_the_moka_pot_on_it",
         "ORG_LIVING_ROOM_SCENE1_put_both_the_alphabet_soup_and_the_tomato_sauce_in_the_basket",

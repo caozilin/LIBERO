@@ -23,59 +23,21 @@ def main():
     )
     os.makedirs(output_folder, exist_ok=True)
 
-    # Task 1: Open top drawer and put black bowl in it
-    register_task_info(
-        language="open the top drawer of the cabinet and put the black bowl in it",
-        scene_name="org_kitchen_scene1",
-        objects_of_interest=["akita_black_bowl_1", "white_cabinet_1"],
-        goal_states=[
-            ("Open", "white_cabinet_1_top_region"),
-            ("In", "akita_black_bowl_1", "white_cabinet_1_top_region"),
-        ],
-    )
+    # Load tasks from JSON config
+    config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "libero_organize_tasks.json")
+    import json
+    with open(config_path, "r", encoding="utf-8") as f:
+        tasks = json.load(f)
 
-    # Task 2: Open bottom drawer and put black bowl in it
-    register_task_info(
-        language="open the bottom drawer of the cabinet and put the black bowl in it",
-        scene_name="org_kitchen_scene1",
-        objects_of_interest=["akita_black_bowl_1", "white_cabinet_1"],
-        goal_states=[
-            ("Open", "white_cabinet_1_bottom_region"),
-            ("In", "akita_black_bowl_1", "white_cabinet_1_bottom_region"),
-        ],
-    )
-
-    # Task 3: Turn on the stove
-    register_task_info(
-        language="turn on the stove",
-        scene_name="org_kitchen_scene2",
-        objects_of_interest=["flat_stove_1"],
-        goal_states=[
-            ("TurnOn", "flat_stove_1"),
-        ],
-    )
-
-    # Task 4: Turn on stove and put moka pot on it
-    register_task_info(
-        language="turn on the stove and put the moka pot on it",
-        scene_name="org_kitchen_scene2",
-        objects_of_interest=["flat_stove_1", "moka_pot_1"],
-        goal_states=[
-            ("TurnOn", "flat_stove_1"),
-            ("On", "moka_pot_1", "flat_stove_1_top_region"),
-        ],
-    )
-
-    # Task 5: Put both alphabet soup and tomato sauce in basket
-    register_task_info(
-        language="put both the alphabet soup and the tomato sauce in the basket",
-        scene_name="org_living_room_scene1",
-        objects_of_interest=["alphabet_soup_1", "tomato_sauce_1", "basket_1"],
-        goal_states=[
-            ("In", "alphabet_soup_1", "basket_1_contain_region"),
-            ("In", "tomato_sauce_1", "basket_1_contain_region"),
-        ],
-    )
+    for task in tasks:
+        # Convert list of lists to list of tuples for goal_states
+        goal_states = [tuple(g) for g in task["goal_states"]]
+        register_task_info(
+            language=task["language"],
+            scene_name=task["scene_name"],
+            objects_of_interest=task["objects_of_interest"],
+            goal_states=goal_states,
+        )
 
     bddl_file_names, failures = generate_bddl_from_task_info(folder=output_folder)
 
@@ -91,6 +53,8 @@ def main():
     
     print(f"{'='*60}")
     print(f"Output folder: {output_folder}")
+    
+    return bddl_file_names, failures, tasks, output_folder
 
 
 if __name__ == "__main__":

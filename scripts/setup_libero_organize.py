@@ -17,12 +17,60 @@ def main():
     # Step 1: Generate BDDL files
     print("\n[Step 1/2] Generating BDDL files...")
     from generate_libero_organize_bddl import main as generate_bddl
-    generate_bddl()
+    bddl_file_names, failures, tasks, output_folder = generate_bddl()
 
     # Step 2: Generate initial states
     print("\n[Step 2/2] Generating initial state files...")
     from generate_libero_organize_init_states import main as generate_init_states
     generate_init_states()
+
+    # Step 3: Update libero_suite_task_map.py
+    print("\n[Step 3/3] Updating libero_suite_task_map.py...")
+    task_map_names = []
+    for task in tasks:
+        task_map_names.append(f"ORG_{task['scene_name'].upper()}_{task['language'].replace(' ', '_')}")
+
+    map_filepath = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "libero", "libero", "benchmark", "libero_suite_task_map.py"
+    )
+    with open(map_filepath, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    lines = content.split('\n')
+    new_lines = []
+    in_organize = False
+    skip_lines = False
+    for line in lines:
+        if '"libero_organize": [' in line:
+            new_lines.append(line)
+            for name in task_map_names:
+                new_lines.append(f'        "{name}",')
+            in_organize = True
+            skip_lines = True
+        elif in_organize and '],' in line:
+            new_lines.append(line)
+            in_organize = False
+            skip_lines = False
+        elif not skip_lines:
+            new_lines.append(line)
+
+    with open(map_filepath, "w", encoding="utf-8") as f:
+        f.write('\n'.join(new_lines))
+
+    print(f"\n{'='*60}")
+    print(f"Generated {len(bddl_file_names)} BDDL files:")
+    for f in bddl_file_names:
+        print(f"  - {os.path.basename(f)}")
+    print(f"\nSuccessfully auto-updated libero_suite_task_map.py with {len(task_map_names)} tasks!")
+    
+    if failures:
+        print(f"\nFailed to generate {len(failures)} tasks:")
+        for scene, lang in failures:
+            print(f"  - {scene}: {lang}")
+    
+    print(f"{'='*60}")
+    print(f"Output folder: {output_folder}")
 
     print("\n" + "=" * 60)
     print("LIBERO_ORGANIZE setup complete!")

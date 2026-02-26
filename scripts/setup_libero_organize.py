@@ -15,20 +15,15 @@ def main():
     print("=" * 60)
 
     # Step 1: Generate BDDL files
-    print("\n[Step 1/2] Generating BDDL files...")
+    print("\n[Step 1/3] Generating BDDL files...")
     from generate_libero_organize_bddl import main as generate_bddl
     bddl_file_names, failures, tasks, output_folder = generate_bddl()
 
-    # Step 2: Generate initial states
-    print("\n[Step 2/2] Generating initial state files...")
-    from generate_libero_organize_init_states import main as generate_init_states
-    generate_init_states()
-
-    # Step 3: Update libero_suite_task_map.py
-    print("\n[Step 3/3] Updating libero_suite_task_map.py...")
+    # Step 2: Update libero_suite_task_map.py
+    print("\n[Step 2/3] Updating libero_suite_task_map.py...")
     task_map_names = []
     for task in tasks:
-        task_map_names.append(f"ORG_{task['scene_name'].upper()}_{task['language'].replace(' ', '_')}")
+        task_map_names.append(f"{task['scene_name'].upper()}_{task['language'].replace(' ', '_')}")
 
     map_filepath = os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
@@ -57,6 +52,11 @@ def main():
 
     with open(map_filepath, "w", encoding="utf-8") as f:
         f.write('\n'.join(new_lines))
+
+    # Step 3: Generate initial states
+    print("\n[Step 3/3] Generating initial state files...")
+    from generate_libero_organize_init_states import main as generate_init_states
+    generate_init_states()
 
     print(f"\n{'='*60}")
     print(f"Generated {len(bddl_file_names)} BDDL files:")

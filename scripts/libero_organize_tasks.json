@@ -1,12 +1,63 @@
 [
     {
-        "language": "put the black bowl on the plate",
-        "scene_name": "org_kitchen_mentioned_scene1",
+        "language": "put the milk in the basket and put the mug on the plate",
+        "scene_name": "org_kitchen_scene1",
         "objects_of_interest": [
+            "milk_1",
+            "basket_1",
+            "white_yellow_mug_1",
+            "plate_1"
+        ],
+        "goal_states": [
+            [
+                "In",
+                "milk_1",
+                "basket_1_contain_region"
+            ],
+            [
+                "On",
+                "white_yellow_mug_1",
+                "plate_1"
+            ]
+        ]
+    },
+    {
+        "language": "put the mug in the basket and put the milk on the plate",
+        "scene_name": "org_kitchen_scene1",
+        "objects_of_interest": [
+            "white_yellow_mug_1",
+            "basket_1",
+            "milk_1",
+            "plate_1"
+        ],
+        "goal_states": [
+            [
+                "In",
+                "white_yellow_mug_1",
+                "basket_1_contain_region"
+            ],
+            [
+                "On",
+                "milk_1",
+                "plate_1"
+            ]
+        ]
+    },
+    {
+        "language": "put the milk in the basket and put the black bowl on the plate",
+        "scene_name": "org_kitchen_scene1",
+        "objects_of_interest": [
+            "milk_1",
+            "basket_1",
             "akita_black_bowl_1",
             "plate_1"
         ],
         "goal_states": [
+            [
+                "In",
+                "milk_1",
+                "basket_1_contain_region"
+            ],
             [
                 "On",
                 "akita_black_bowl_1",
@@ -15,73 +66,68 @@
         ]
     },
     {
-        "language": "put the ketchup on the plate",
-        "scene_name": "org_kitchen_mentioned_scene1",
+        "language": "put the black bowl in the basket and put the milk on the plate",
+        "scene_name": "org_kitchen_scene1",
         "objects_of_interest": [
-            "ketchup_1",
+            "akita_black_bowl_1",
+            "basket_1",
+            "milk_1",
             "plate_1"
         ],
         "goal_states": [
             [
+                "In",
+                "akita_black_bowl_1",
+                "basket_1_contain_region"
+            ],
+            [
                 "On",
-                "ketchup_1",
+                "milk_1",
                 "plate_1"
             ]
         ]
     },
     {
-        "language": "open the top drawer of the cabinet",
-        "scene_name": "org_kitchen_mentioned_scene1",
+        "language": "put the mug in the basket and put the black bowl on the plate",
+        "scene_name": "org_kitchen_scene1",
         "objects_of_interest": [
-            "wooden_cabinet_1"
-        ],
-        "goal_states": [
-            [
-                "Open",
-                "wooden_cabinet_1_top_region"
-            ]
-        ]
-    },
-    {
-        "language": "put the white bowl in the wooden tray",
-        "scene_name": "org_kitchen_not_mentioned_scene1",
-        "objects_of_interest": [
-            "white_bowl_1",
-            "wooden_tray_1"
+            "white_yellow_mug_1",
+            "basket_1",
+            "akita_black_bowl_1",
+            "plate_1"
         ],
         "goal_states": [
             [
                 "In",
-                "white_bowl_1",
-                "wooden_tray_1_contain_region"
+                "white_yellow_mug_1",
+                "basket_1_contain_region"
+            ],
+            [
+                "On",
+                "akita_black_bowl_1",
+                "plate_1"
             ]
         ]
     },
     {
-        "language": "put the frying pan in the wooden tray",
-        "scene_name": "org_kitchen_not_mentioned_scene1",
+        "language": "put the black bowl in the basket and put the mug on the plate",
+        "scene_name": "org_kitchen_scene1",
         "objects_of_interest": [
-            "chefmate_8_frypan_1",
-            "wooden_tray_1"
+            "akita_black_bowl_1",
+            "basket_1",
+            "white_yellow_mug_1",
+            "plate_1"
         ],
         "goal_states": [
             [
                 "In",
-                "chefmate_8_frypan_1",
-                "wooden_tray_1_contain_region"
-            ]
-        ]
-    },
-    {
-        "language": "open the top drawer of the cabinet",
-        "scene_name": "org_kitchen_not_mentioned_scene1",
-        "objects_of_interest": [
-            "white_cabinet_1"
-        ],
-        "goal_states": [
+                "akita_black_bowl_1",
+                "basket_1_contain_region"
+            ],
             [
-                "Open",
-                "white_cabinet_1_top_region"
+                "On",
+                "white_yellow_mug_1",
+                "plate_1"
             ]
         ]
     }

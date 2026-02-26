@@ -23,7 +23,7 @@ def main():
     output_folder = os.path.join(get_libero_path("init_states"), "libero_organize")
     os.makedirs(output_folder, exist_ok=True)
 
-    num_init_states = 10
+    num_init_states = 3
     resolution = 128
 
     for task_id in range(num_tasks):

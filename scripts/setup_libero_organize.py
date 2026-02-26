@@ -54,9 +54,14 @@ def main():
         f.write('\n'.join(new_lines))
 
     # Step 3: Generate initial states
+    # Run as a subprocess so it starts a fresh Python process that reads
+    # the updated libero_suite_task_map.py from disk (avoids stale module cache).
     print("\n[Step 3/3] Generating initial state files...")
-    from generate_libero_organize_init_states import main as generate_init_states
-    generate_init_states()
+    import subprocess
+    init_states_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), "generate_libero_organize_init_states.py")
+    result = subprocess.run([sys.executable, init_states_script], check=False)
+    if result.returncode != 0:
+        print(f"[WARNING] generate_libero_organize_init_states.py exited with code {result.returncode}")
 
     print(f"\n{'='*60}")
     print(f"Generated {len(bddl_file_names)} BDDL files:")

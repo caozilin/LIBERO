@@ -1,5 +1,4 @@
 import re
-import numpy as np
 from libero.libero.envs import objects
 from libero.libero.utils.bddl_generation_utils import *
 from libero.libero.envs.objects import OBJECTS_DICT
@@ -7,92 +6,209 @@ from libero.libero.utils.object_utils import get_affordance_regions
 
 from libero.libero.utils.mu_utils import register_mu, InitialSceneTemplates
 
+@register_mu(scene_type="org_study")
+class OrgStudyScene1(InitialSceneTemplates):
+    """StudyScene1 variant with 2 extra small objects (red_coffee_mug, porcelain_mug).
+    Generates 4 tasks: place each of the 4 objects (book, mug_rw, mug_wh, mug_pc)
+    into the back compartment of the desk_caddy.
+    Objects are spread on the table; caddy is in its standard position.
+    """
 
-# ============================================================================
-# LIBERO_ORGANIZE - Custom task suite for OpenPI project
-# ============================================================================
-
-# Kitchen Scene 1: plate + basket (targets) + milk + orange_juice + akita_black_bowl
-# Objects arranged in a triangle layout, pulled closer to the robot arm (max Y=0.15)
-@register_mu(scene_type="kitchen")
-class OrgKitchenScene1(InitialSceneTemplates):
     def __init__(self):
         fixture_num_info = {
-            "kitchen_table": 1,
+            "study_table": 1,
+            "desk_caddy": 1,
         }
+
         object_num_info = {
-            "plate": 1,
-            "basket": 1,
-            "milk": 1,
+            "black_book": 1,
             "white_yellow_mug": 1,
-            "akita_black_bowl": 1,
+            "red_coffee_mug": 1,
+            "porcelain_mug": 1,
         }
+
         super().__init__(
-            workspace_name="kitchen_table",
+            workspace_name="study_table",
             fixture_num_info=fixture_num_info,
             object_num_info=object_num_info,
         )
 
     def define_regions(self):
+        # caddy placement (back-left area)
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[0.1, -0.15],
-                region_name="plate_init_region",
+                region_centroid_xy=[-0.20, -0.14],
+                region_name="desk_caddy_init_region",
                 target_name=self.workspace_name,
-                region_half_len=0.025,
+                region_half_len=0.01,
+                yaw_rotation=(np.pi, np.pi),
             )
         )
+        # desk_caddy_right_region referenced in existing BDDL tasks
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[-0.15, -0.15],
-                region_name="basket_init_region",
+                region_centroid_xy=[-0.20, 0.15],
+                region_name="desk_caddy_right_region",
                 target_name=self.workspace_name,
-                region_half_len=0.025,
+                region_half_len=0.05,
+                yaw_rotation=(np.pi, np.pi),
             )
         )
+        # book — centre-right
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[-0.15, 0.08],
-                region_name="milk_init_region",
+                region_centroid_xy=[0.0, 0.15],
+                region_name="black_book_init_region",
                 target_name=self.workspace_name,
                 region_half_len=0.025,
+                yaw_rotation=(-np.pi / 2, -np.pi / 4),
             )
         )
+        # white-yellow mug — front-right
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[0.1, 0],
+                region_centroid_xy=[0.10, 0.0],
                 region_name="white_yellow_mug_init_region",
                 target_name=self.workspace_name,
                 region_half_len=0.025,
             )
         )
+        # red coffee mug — front-left
         self.regions.update(
             self.get_region_dict(
-                region_centroid_xy=[0.00, 0.15],
-                region_name="bowl_init_region",
+                region_centroid_xy=[0.05, -0.20],
+                region_name="red_coffee_mug_init_region",
                 target_name=self.workspace_name,
                 region_half_len=0.025,
             )
         )
-        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(self.regions)
+        # porcelain mug — back area
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.05, 0.20],
+                region_name="porcelain_mug_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(
+            self.regions
+        )
 
     @property
     def init_states(self):
-        return [
-            ("On", "plate_1", "kitchen_table_plate_init_region"),
-            ("On", "basket_1", "kitchen_table_basket_init_region"),
-            ("On", "milk_1", "kitchen_table_milk_init_region"),
-            ("On", "white_yellow_mug_1", "kitchen_table_white_yellow_mug_init_region"),
-            ("On", "akita_black_bowl_1", "kitchen_table_bowl_init_region"),
+        states = [
+            ("On", "desk_caddy_1", "study_table_desk_caddy_init_region"),
+            ("On", "black_book_1", "study_table_black_book_init_region"),
+            ("On", "white_yellow_mug_1", "study_table_white_yellow_mug_init_region"),
+            ("On", "red_coffee_mug_1", "study_table_red_coffee_mug_init_region"),
+            ("On", "porcelain_mug_1", "study_table_porcelain_mug_init_region"),
         ]
+        return states
 
 
-# ============================================================================
-# Original LIBERO scenes
-# ============================================================================
+@register_mu(scene_type="org_living_room")
+class OrgLivingRoomScene6(InitialSceneTemplates):
+    """LivingRoomScene6 variant with repositioned objects for a harder challenge.
+    Plate, pudding and two mugs are placed in non-standard positions.
+    Tasks:
+      1. put the white mug on the plate and put the chocolate pudding to the right of the plate
+      2. put the white mug on the plate and put the chocolate pudding to the left of the plate
+      3. put the chocolate pudding to the left of the plate
+    """
 
+    def __init__(self):
+        fixture_num_info = {
+            "living_room_table": 1,
+        }
 
+        object_num_info = {
+            "porcelain_mug": 1,
+            "red_coffee_mug": 1,
+            "plate": 1,
+            "chocolate_pudding": 1,
+        }
 
+        super().__init__(
+            workspace_name="living_room_table",
+            fixture_num_info=fixture_num_info,
+            object_num_info=object_num_info,
+        )
+
+    def define_regions(self):
+        # plate — shifted to front-center (different from original [0.15, 0.0])
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.10, 0.0],
+                region_name="plate_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        # left-of-plate target region
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.10, -0.12],
+                region_name="plate_left_region",
+                target_name=self.workspace_name,
+                region_half_len=0.05,
+            )
+        )
+        # right-of-plate target region
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.10, 0.12],
+                region_name="plate_right_region",
+                target_name=self.workspace_name,
+                region_half_len=0.05,
+            )
+        )
+        # porcelain mug (white mug) — swapped to back-right
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.15, 0.20],
+                region_name="porcelain_mug_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        # chocolate pudding — moved to front-left
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.05, -0.20],
+                region_name="chocolate_pudding_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        # red coffee mug — back-center
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.20, 0.0],
+                region_name="red_coffee_mug_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.025,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(
+            self.regions
+        )
+
+    @property
+    def init_states(self):
+        states = [
+            ("On", "plate_1", "living_room_table_plate_init_region"),
+            ("On", "red_coffee_mug_1", "living_room_table_red_coffee_mug_init_region"),
+            (
+                "On",
+                "chocolate_pudding_1",
+                "living_room_table_chocolate_pudding_init_region",
+            ),
+            ("On", "porcelain_mug_1", "living_room_table_porcelain_mug_init_region"),
+        ]
+        return states
+
+#=============================================Initial
 
 @register_mu(scene_type="kitchen")
 class KitchenScene1(InitialSceneTemplates):

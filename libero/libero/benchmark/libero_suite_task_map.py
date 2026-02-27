@@ -1,11 +1,24 @@
 libero_task_map = {
     "libero_organize": [
-        "ORG_KITCHEN_SCENE1_put_the_milk_in_the_basket_and_put_the_mug_on_the_plate",
-        "ORG_KITCHEN_SCENE1_put_the_mug_in_the_basket_and_put_the_milk_on_the_plate",
-        "ORG_KITCHEN_SCENE1_put_the_milk_in_the_basket_and_put_the_black_bowl_on_the_plate",
-        "ORG_KITCHEN_SCENE1_put_the_black_bowl_in_the_basket_and_put_the_milk_on_the_plate",
-        "ORG_KITCHEN_SCENE1_put_the_mug_in_the_basket_and_put_the_black_bowl_on_the_plate",
-        "ORG_KITCHEN_SCENE1_put_the_black_bowl_in_the_basket_and_put_the_mug_on_the_plate",
+        # 3 mugs x 2 plates: P(3,2)=6 permutations, using OrgLivingRoomScene5
+        "ORG_LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5_put_the_white_mug_on_the_left_plate_and_put_the_red_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_left_plate_and_put_the_white_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5_put_the_yellow_and_white_mug_on_the_left_plate_and_put_the_red_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate_and_put_the_white_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5_put_the_red_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+        # 2 mugs x 2 plates: 2 permutations, using OrgLivingRoomScene5b (no white mug)
+        "ORG_LIVING_ROOM_SCENE5B_put_the_yellow_and_white_mug_on_the_left_plate_and_put_the_red_mug_on_the_right_plate",
+        "ORG_LIVING_ROOM_SCENE5B_put_the_red_mug_on_the_left_plate_and_put_the_yellow_and_white_mug_on_the_right_plate",
+        # 4 objects -> caddy, using OrgStudyScene1
+        "ORG_STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
+        "ORG_STUDY_SCENE1_pick_up_the_yellow_and_white_mug_and_place_it_in_the_back_compartment_of_the_caddy",
+        "ORG_STUDY_SCENE1_pick_up_the_red_mug_and_place_it_in_the_back_compartment_of_the_caddy",
+        "ORG_STUDY_SCENE1_pick_up_the_white_mug_and_place_it_in_the_back_compartment_of_the_caddy",
+        # repositioned-objects challenge, using OrgLivingRoomScene6
+        "ORG_LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_right_of_the_plate",
+        "ORG_LIVING_ROOM_SCENE6_put_the_white_mug_on_the_plate_and_put_the_chocolate_pudding_to_the_left_of_the_plate",
+        "ORG_LIVING_ROOM_SCENE6_put_the_chocolate_pudding_to_the_left_of_the_plate",
     ],
     "libero_spatial": [
         "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",

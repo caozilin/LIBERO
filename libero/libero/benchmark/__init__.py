@@ -60,6 +60,9 @@ libero_suites = [
     "libero_goal",
     "libero_90",
     "libero_10",
+    "organize_sim",
+    "organize_med",
+    "organize_hard",
 ]
 task_maps = {}
 max_len = 0
@@ -225,4 +228,28 @@ class LIBERO_100(Benchmark):
     def __init__(self, task_order_index=0):
         super().__init__(task_order_index=task_order_index)
         self.name = "libero_100"
+        self._make_benchmark()
+
+
+@register_benchmark
+class ORGANIZE_SIM(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "organize_sim"
+        self._make_benchmark()
+
+
+@register_benchmark
+class ORGANIZE_MED(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "organize_med"
+        self._make_benchmark()
+
+
+@register_benchmark
+class ORGANIZE_HARD(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "organize_hard"
         self._make_benchmark()

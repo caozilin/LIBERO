@@ -1,0 +1,68 @@
+(define (problem LIBERO_Tabletop_Manipulation)
+  (:domain robosuite)
+  (:language pick up the lying can and put it in the basket)
+    (:regions
+      (basket_init_region
+          (:target main_table)
+          (:ranges (
+              (0.06999999999999999 0.12000000000000001 0.22999999999999998 0.28)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (milk_init_region
+          (:target main_table)
+          (:ranges (
+              (-0.22999999999999998 -0.22999999999999998 -0.06999999999999999 -0.06999999999999999)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (can_init_region
+          (:target main_table)
+          (:ranges (
+              (-0.28 -0.03 -0.12000000000000001 0.13)
+            )
+          )
+          (:yaw_rotation (
+              (0.0 0.0)
+            )
+          )
+      )
+      (contain_region
+          (:target basket_1)
+      )
+    )
+
+  (:fixtures
+    main_table - table
+  )
+
+  (:objects
+    milk_1 - milk
+    lying_alphabet_soup_1 - lying_alphabet_soup
+    basket_1 - basket
+  )
+
+  (:obj_of_interest
+    lying_alphabet_soup_1
+    basket_1
+  )
+
+  (:init
+    (On milk_1 main_table_milk_init_region)
+    (On lying_alphabet_soup_1 main_table_can_init_region)
+    (On basket_1 main_table_basket_init_region)
+  )
+
+  (:goal
+    (And (In lying_alphabet_soup_1 basket_1_contain_region))
+  )
+
+)

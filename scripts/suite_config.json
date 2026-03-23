@@ -1,0 +1,28 @@
+{
+    "suite_name": "organize_test",
+    "suite_description": "Simple test tasks for milk and basket manipulation",
+    "tasks": [
+        {
+            "language": "pick up the milk and put it in the basket",
+            "scene_name": "test_scene3",
+            "objects_of_interest": [
+                "milk_1",
+                "basket_1"
+            ],
+            "goal_states": [
+                ["In", "milk_1", "basket_1_contain_region"]
+            ]
+        },
+        {
+            "language": "pick up the lying can and put it in the basket",
+            "scene_name": "test_scene3",
+            "objects_of_interest": [
+                "lying_alphabet_soup_1",
+                "basket_1"
+            ],
+            "goal_states": [
+                ["In", "lying_alphabet_soup_1", "basket_1_contain_region"]
+            ]
+        }
+    ]
+}

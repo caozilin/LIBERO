@@ -40,6 +40,17 @@ class AlphabetSoup(HopeBaseObject):
 
 
 @register_object
+class LyingAlphabetSoup(HopeBaseObject):
+    def __init__(self, name="lying_alphabet_soup", obj_name="alphabet_soup"):
+        super().__init__(name, obj_name)
+        self.rotation = {
+            "x": (np.pi / 2, np.pi / 2),
+            "z": (0.0, 2 * np.pi),
+        }
+        self.rotation_axis = None
+
+
+@register_object
 class BbqSauce(HopeBaseObject):
     def __init__(self, name="bbq_sauce", obj_name="bbq_sauce"):
         super().__init__(name, obj_name)

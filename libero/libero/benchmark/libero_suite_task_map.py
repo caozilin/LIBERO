@@ -1,4 +1,8 @@
 libero_task_map = {
+    "organize_test": [
+        "TEST_SCENE3_pick_up_the_milk_and_put_it_in_the_basket",
+        "TEST_SCENE3_pick_up_the_lying_can_and_put_it_in_the_basket",
+    ],
     "libero_organize": [
         "STUDY_SCENE1_pick_up_the_book_and_place_it_in_the_back_compartment_of_the_caddy",
         "STUDY_SCENE1_pick_up_the_yellow_and_white_mug_and_place_it_in_the_back_compartment_of_the_caddy",

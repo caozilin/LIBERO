@@ -54,6 +54,7 @@ def grab_language_from_filename(x):
 
 
 libero_suites = [
+    "organize_test",
     "libero_organize",
     "libero_spatial",
     "libero_object",
@@ -118,7 +119,8 @@ class Benchmark(abc.ABC):
 
     def _make_benchmark(self):
         tasks = list(task_maps[self.name].values())
-        if self.name == "libero_90" or self.name == "libero_organize":
+        n_tasks = len(tasks)
+        if n_tasks != 10:
             self.tasks = tasks
         else:
             print(f"[info] using task orders {task_orders[self.task_order_index]}")
@@ -170,6 +172,14 @@ class Benchmark(abc.ABC):
 
     def set_task_embs(self, task_embs):
         self.task_embs = task_embs
+
+
+@register_benchmark
+class ORGANIZE_TEST(Benchmark):
+    def __init__(self, task_order_index=0):
+        super().__init__(task_order_index=task_order_index)
+        self.name = "organize_test"
+        self._make_benchmark()
 
 
 @register_benchmark

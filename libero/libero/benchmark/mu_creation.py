@@ -8,6 +8,197 @@ from libero.libero.utils.mu_utils import register_mu, InitialSceneTemplates
 
 #=============================================Initial
 
+# ----------------------------------------------------------------------
+# Custom Test Scene: Simple milk + basket task for testing
+# Scene: TestScene1 - Simplest scene with only milk and basket
+# Task: pick up the milk and put it in the basket
+# ----------------------------------------------------------------------
+
+@register_mu(scene_type="test")
+class TestScene1(InitialSceneTemplates):
+    def __init__(self):
+
+        fixture_num_info = {
+            "table": 1,
+        }
+
+        object_num_info = {
+            "milk": 1,
+            "basket": 1,
+        }
+
+        super().__init__(
+            workspace_name="main_table",
+            fixture_num_info=fixture_num_info,
+            object_num_info=object_num_info,
+        )
+
+    def define_regions(self):
+        # Basket: 放在桌子右前方，增大范围
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.05, 0.20],
+                region_name="basket_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.1,
+            )
+        )
+
+        # Milk: 放在桌子左后方，增大范围，避免与 basket 重叠
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.15, -0.15],
+                region_name="milk_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.1,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(
+            self.regions
+        )
+
+    @property
+    def init_states(self):
+        states = [
+            ("On", "milk_1", "main_table_milk_init_region"),
+            ("On", "basket_1", "main_table_basket_init_region"),
+        ]
+        return states
+
+
+# ----------------------------------------------------------------------
+# Custom Test Scene 2: Lying can + basket task
+# Scene: TestScene2 - Scene with lying alphabet soup and basket
+# Task: pick up the lying can and put it in the basket
+# ----------------------------------------------------------------------
+
+@register_mu(scene_type="test")
+class TestScene2(InitialSceneTemplates):
+    def __init__(self):
+
+        fixture_num_info = {
+            "table": 1,
+        }
+
+        object_num_info = {
+            "lying_alphabet_soup": 1,
+            "basket": 1,
+        }
+
+        super().__init__(
+            workspace_name="main_table",
+            fixture_num_info=fixture_num_info,
+            object_num_info=object_num_info,
+        )
+
+    def define_regions(self):
+        # Basket: 放在桌子右前方，增大范围
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.05, 0.20],
+                region_name="basket_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.1,
+            )
+        )
+
+        # Can: 放在桌子左后方，增大范围，避免与 basket 重叠
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.15, -0.15],
+                region_name="can_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.1,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(
+            self.regions
+        )
+
+    @property
+    def init_states(self):
+        states = [
+            ("On", "lying_alphabet_soup_1", "main_table_can_init_region"),
+            ("On", "basket_1", "main_table_basket_init_region"),
+        ]
+        return states
+
+
+# ----------------------------------------------------------------------
+# Custom Test Scene 3: Combined scene with milk, can, and basket
+# Scene: TestScene3 - Scene with milk, lying alphabet soup, and basket
+# Task 1: pick up the milk and put it in the basket
+# Task 2: pick up the lying can and put it in the basket
+# ----------------------------------------------------------------------
+
+@register_mu(scene_type="test")
+class TestScene3(InitialSceneTemplates):
+    def __init__(self):
+
+        fixture_num_info = {
+            "table": 1,
+        }
+
+        object_num_info = {
+            "milk": 1,
+            "lying_alphabet_soup": 1,
+            "basket": 1,
+        }
+
+        super().__init__(
+            workspace_name="main_table",
+            fixture_num_info=fixture_num_info,
+            object_num_info=object_num_info,
+        )
+
+    def define_regions(self):
+        # Basket: 放在桌子右前方
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[0.15, 0.20],
+                region_name="basket_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.08,
+            )
+        )
+
+        # Milk: 放在桌子左后方
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.15, -0.15],
+                region_name="milk_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.08,
+            )
+        )
+
+        # Can: 放在桌子左侧
+        self.regions.update(
+            self.get_region_dict(
+                region_centroid_xy=[-0.20, 0.05],
+                region_name="can_init_region",
+                target_name=self.workspace_name,
+                region_half_len=0.08,
+            )
+        )
+        self.xy_region_kwargs_list = get_xy_region_kwargs_list_from_regions_info(
+            self.regions
+        )
+
+    @property
+    def init_states(self):
+        states = [
+            ("On", "milk_1", "main_table_milk_init_region"),
+            ("On", "lying_alphabet_soup_1", "main_table_can_init_region"),
+            ("On", "basket_1", "main_table_basket_init_region"),
+        ]
+        return states
+
+
+# ----------------------------------------------------------------------
+# End of Custom Test Scene
+# ----------------------------------------------------------------------
+
 
 @register_mu(scene_type="kitchen")
 class KitchenScene1(InitialSceneTemplates):

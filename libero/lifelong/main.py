@@ -10,7 +10,7 @@ from pathlib import Path
 
 import hydra
 import numpy as np
-import wandb
+import swanlab
 import yaml
 import torch
 from easydict import EasyDict
@@ -23,6 +23,7 @@ from libero.lifelong.algos import get_algo_class, get_algo_list
 from libero.lifelong.models import get_policy_list
 from libero.lifelong.datasets import GroupedTaskDataset, SequenceVLDataset, get_dataset
 from libero.lifelong.metric import evaluate_loss, evaluate_success
+from libero.lifelong.experiment_logging import log_result_summary
 from libero.lifelong.utils import (
     NpEncoder,
     compute_flops,
@@ -131,9 +132,12 @@ def main(hydra_cfg):
     create_experiment_dir(cfg)
     cfg.shape_meta = shape_meta
 
-    if cfg.use_wandb:
-        wandb.init(project="libero", config=cfg)
-        wandb.run.name = cfg.experiment_name
+    if cfg.use_swanlab:
+        swanlab.init(
+            project=cfg.swanlab_project,
+            experiment_name=cfg.experiment_name,
+            config=dict(cfg),
+        )
 
     result_summary = {
         "L_conf_mat": np.zeros((n_manip_tasks, n_manip_tasks)),  # loss confusion matrix
@@ -195,16 +199,8 @@ def main(hydra_cfg):
             result_summary["L_conf_mat"][-1] = L
             result_summary["S_conf_mat"][-1] = S
 
-            if cfg.use_wandb:
-                wandb.run.summary["success_confusion_matrix"] = result_summary[
-                    "S_conf_mat"
-                ]
-                wandb.run.summary["loss_confusion_matrix"] = result_summary[
-                    "L_conf_mat"
-                ]
-                wandb.run.summary["fwd_transfer_success"] = result_summary["S_fwd"]
-                wandb.run.summary["fwd_transfer_loss"] = result_summary["L_fwd"]
-                wandb.run.summary.update()
+            if cfg.use_swanlab:
+                log_result_summary(result_summary, step=n_tasks)
 
             print(("[All task loss ] " + " %4.2f |" * n_tasks) % tuple(L))
             print(("[All task succ.] " + " %4.2f |" * n_tasks) % tuple(S))
@@ -238,16 +234,8 @@ def main(hydra_cfg):
                 result_summary["L_conf_mat"][i][: i + 1] = L
                 result_summary["S_conf_mat"][i][: i + 1] = S
 
-                if cfg.use_wandb:
-                    wandb.run.summary["success_confusion_matrix"] = result_summary[
-                        "S_conf_mat"
-                    ]
-                    wandb.run.summary["loss_confusion_matrix"] = result_summary[
-                        "L_conf_mat"
-                    ]
-                    wandb.run.summary["fwd_transfer_success"] = result_summary["S_fwd"]
-                    wandb.run.summary["fwd_transfer_loss"] = result_summary["L_fwd"]
-                    wandb.run.summary.update()
+                if cfg.use_swanlab:
+                    log_result_summary(result_summary, step=i + 1)
 
                 print(
                     f"[info] train time (min) {(t1-t0)/60:.1f} "
@@ -261,8 +249,8 @@ def main(hydra_cfg):
                 )
 
     print("[info] finished learning\n")
-    if cfg.use_wandb:
-        wandb.finish()
+    if cfg.use_swanlab:
+        swanlab.finish()
 
 
 if __name__ == "__main__":
